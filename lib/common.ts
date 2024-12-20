@@ -380,19 +380,27 @@ export type RequestEvent = FriendRequestEvent | GroupRequestEvent;
 
 export type OneBotEvent = MessageEvent | MetaEvent | NoticeEvent | RequestEvent;
 
-type GetEventDetail<T> = T extends { message_type: infer M } ? M :
-    T extends { request_type: infer R } ? R :
-    T extends { notice_type: infer N } ? N :
-    T extends { meta_event_type: infer E } ? E :
+type GetEventDetail<T> = T extends { message_type: infer M extends string } ? `message.${M}` :
+    T extends { request_type: infer R extends string } ? `request.${R}` :
+    T extends { notice_type: infer N extends string, sub_type?: infer S } ?
+        S extends string ? `notice.${N}.${S}` : `notice.${N}` :
+    T extends { meta_event_type: infer E extends string, sub_type?: infer S } ?
+        S extends string ? `meta_event.${E}.${S}` : `meta_event.${E}` :
     never;
 
-type BuildEventType<T extends OneBotEvent> = T extends BaseEvent
-    ? `${T['post_type']}.${GetEventDetail<T>}`
-    : never;
+type BuildEventType<T> = T extends BaseEvent ? GetEventDetail<T> : never;
+
+type AllEventTypes = BuildEventType<OneBotEvent>;
 
 export type EventTypeMap = {
-    [K in BuildEventType<OneBotEvent>]: Extract<
-        OneBotEvent, { post_type: K extends `${infer P}.${string}` ? P : never }>
+    [K in AllEventTypes]: Extract<OneBotEvent, {
+        post_type: K extends `${infer P}.${string}` ? P : never;
+        message_type?: K extends `message.${infer MT}` ? MT : never;
+        request_type?: K extends `request.${infer RT}` ? RT : never;
+        notice_type?: K extends `notice.${infer NT}.${string}` ? NT : K extends `notice.${infer NT}` ? NT : never;
+        meta_event_type?:
+            K extends `meta_event.${infer MT}.${string}` ? MT : K extends `meta_event.${infer MT}` ? MT : never;
+    }>
 };
 
 export interface Bot {

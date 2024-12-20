@@ -1,7 +1,6 @@
 {
-    "name": "philia",
+    "name": "philia-onebot",
     "description": "Fastly build your own QQ bot",
-    "private": true,
     "type": "module",
     "scripts": {
         "type:check": "tsc --noEmit",
@@ -10,10 +9,10 @@
         "start": "tsx ./index.ts"
     },
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^8.18.1",
-        "@typescript-eslint/parser": "^8.18.1",
         "@types/node": "^22.10.2",
         "@types/ws": "^8.5.13",
+        "@typescript-eslint/eslint-plugin": "^8.18.1",
+        "@typescript-eslint/parser": "^8.18.1",
         "eslint": "^8",
         "tsx": "^4.19.2",
         "typescript": "^5.7.2"

@@ -171,7 +171,6 @@ export class Client implements Bot {
         });
     }
 
-    // 实现其余群组管理接口...
     setGroupWholeBan (groupId: number, enable?: boolean) {
         return this.callApi('set_group_whole_ban', {group_id: groupId, enable});
     }
@@ -205,7 +204,6 @@ export class Client implements Bot {
         });
     }
 
-    // 实现请求处理接口...
     setFriendAddRequest (flag: string, approve?: boolean, remark?: string) {
         return this.callApi('set_friend_add_request', {flag, approve, remark});
     }
