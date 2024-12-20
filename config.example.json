@@ -1,0 +1,6 @@
+{
+    "host": "127.0.0.1",
+    "port": 7726,
+    "access_token": "your_access_token",
+    "log_level": "info"
+}
