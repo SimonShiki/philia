@@ -425,31 +425,31 @@ export interface Bot {
     off (listener: (event: OneBotEvent) => void): void;
 
     /**
-     * 发送私聊消息
+     * Send a private message.
      * @event send_private_msg
      */
     sendPrivateMsg(userId: number, message: string | Message[], autoEscape?: boolean): Promise<{message_id: number}>;
 
     /**
-     * 发送群消息
+     * Send a group message.
      * @event send_group_msg
      */
     sendGroupMsg(groupId: number, message: string | Message[], autoEscape?: boolean): Promise<{message_id: number}>;
 
     /**
-     * 发送消息
+     * Send a message.
      * @event send_msg
      */
     sendMsg(messageType: 'private' | 'group', id: number, message: string | Message[], autoEscape?: boolean): Promise<{message_id: number}>;
 
     /**
-     * 撤回消息
+     * Recall a message
      * @event delete_msg
      */
     deleteMsg(messageId: number): Promise<void>;
 
     /**
-     * 获取消息
+     * Get a message from specefic message id
      * @event get_msg
      */
     getMsg(messageId: number): Promise<{
@@ -462,97 +462,97 @@ export interface Bot {
     }>;
 
     /**
-     * 获取合并转发消息
+     * Get a forward message by specific id
      * @event get_forward_msg
      */
     getForwardMsg(id: string): Promise<{message: Message[]}>;
 
     /**
-     * 发送好友赞
+     * Send a like to a user
      * @event send_like
      */
     sendLike(userId: number, times?: number): Promise<void>;
 
     /**
-     * 群组踢人
+     * Kick someone in specific group
      * @event set_group_kick
      */
     setGroupKick(groupId: number, userId: number, rejectAddRequest?: boolean): Promise<void>;
 
     /**
-     * 群组单人禁言
+     * Ban someone in specific group
      * @event set_group_ban
      */
     setGroupBan(groupId: number, userId: number, duration?: number): Promise<void>;
 
     /**
-     * 群组匿名用户禁言
+     * Ban someone who is anonymous in specific group
      * @event set_group_anonymous_ban
      */
     setGroupAnonymousBan(groupId: number, anonymous?: Anonymous, flag?: string, duration?: number): Promise<void>;
 
     /**
-     * 群组全员禁言
+     * Ban everyone in specific group
      * @event set_group_whole_ban
      */
     setGroupWholeBan(groupId: number, enable?: boolean): Promise<void>;
 
     /**
-     * 群组设置管理员
+     * Set someone as admin in specific group
      * @event set_group_admin
      */
     setGroupAdmin(groupId: number, userId: number, enable?: boolean): Promise<void>;
 
     /**
-     * 群组匿名设置
+     * Set whether group can use anonymous
      * @event set_group_anonymous
      */
     setGroupAnonymous(groupId: number, enable?: boolean): Promise<void>;
 
     /**
-     * 设置群名片（群备注）
+     * Set group card
      * @event set_group_card
      */
     setGroupCard(groupId: number, userId: number, card?: string): Promise<void>;
 
     /**
-     * 设置群名
+     * Set group name
      * @event set_group_name
      */
     setGroupName(groupId: number, groupName: string): Promise<void>;
 
     /**
-     * 退出群组
+     * Leave a group
      * @event set_group_leave
      */
     setGroupLeave(groupId: number, isDismiss?: boolean): Promise<void>;
 
     /**
-     * 设置群组专属头衔
+     * Set group special title
      * @event set_group_special_title
      */
     setGroupSpecialTitle(groupId: number, userId: number, specialTitle?: string, duration?: number): Promise<void>;
 
     /**
-     * 处理加好友请求
+     * Handle friend request
      * @event set_friend_add_request
      */
     setFriendAddRequest(flag: string, approve?: boolean, remark?: string): Promise<void>;
 
     /**
-     * 处理加群请求／邀请
+     * Handle group request
      * @event set_group_add_request
      */
     setGroupAddRequest(flag: string, subType: 'add' | 'invite', approve?: boolean, reason?: string): Promise<void>;
 
     /**
-     * 获取登录号信息
+     * Get login info
      * @event get_login_info
      */
     getLoginInfo(): Promise<{user_id: number; nickname: string}>;
 
     /**
-     * 获取陌生人信息
+     * Get stranger info
      * @event get_stranger_info
      */
     getStrangerInfo(userId: number, noCache?: boolean): Promise<{
@@ -563,7 +563,7 @@ export interface Bot {
     }>;
 
     /**
-     * 获取好友列表
+     * Get friend list
      * @event get_friend_list
      */
     getFriendList(): Promise<Array<{
@@ -573,7 +573,7 @@ export interface Bot {
     }>>;
 
     /**
-     * 获取群信息
+     * Get group info
      * @event get_group_info
      */
     getGroupInfo(groupId: number, noCache?: boolean): Promise<{
@@ -584,7 +584,7 @@ export interface Bot {
     }>;
 
     /**
-     * 获取群列表
+     * Get group list
      * @event get_group_list
      */
     getGroupList(): Promise<Array<{
@@ -595,7 +595,7 @@ export interface Bot {
     }>>;
 
     /**
-     * 获取群成员信息
+     * Get group member info
      * @event get_group_member_info
      */
     getGroupMemberInfo(groupId: number, userId: number, noCache?: boolean): Promise<{
@@ -617,7 +617,7 @@ export interface Bot {
     }>;
 
     /**
-     * 获取群成员列表
+     * Get group member list
      * @event get_group_member_list
      */
     getGroupMemberList(groupId: number): Promise<Array<{
@@ -639,7 +639,7 @@ export interface Bot {
     }>>;
 
     /**
-     * 获取群荣誉信息
+     * Get group honor info
      * @event get_group_honor_info
      */
     getGroupHonorInfo(groupId: number, type: 'talkative' | 'performer' | 'legend' | 'strong_newbie' | 'emotion' | 'all'): Promise<{
@@ -683,49 +683,49 @@ export interface Bot {
     }>;
 
     /**
-     * 获取 Cookies
+     * Get Cookies
      * @event get_cookies
      */
     getCookies(domain?: string): Promise<{cookies: string}>;
 
     /**
-     * 获取 CSRF Token
+     * Get CSRF Token
      * @event get_csrf_token
      */
     getCsrfToken(): Promise<{token: number}>;
 
     /**
-     * 获取 QQ 相关接口凭证
+     * Get QQ interface credentials
      * @event get_credentials
      */
     getCredentials(domain?: string): Promise<{cookies: string; csrf_token: number}>;
 
     /**
-     * 获取语音
+     * Get voice data
      * @event get_record
      */
     getRecord(file: string, outFormat: string): Promise<{file: string}>;
 
     /**
-     * 获取图片
+     * Get image data
      * @event get_image
      */
     getImage(file: string): Promise<{file: string}>;
 
     /**
-     * 检查是否可以发送图片
+     * Check if images can be sent
      * @event can_send_image
      */
     canSendImage(): Promise<{yes: boolean}>;
 
     /**
-     * 检查是否可以发送语音
+     * Check if voice messages can be sent
      * @event can_send_record
      */
     canSendRecord(): Promise<{yes: boolean}>;
 
     /**
-     * 获取运行状态
+     * Get runtime status
      * @event get_status
      */
     getStatus(): Promise<{
@@ -734,7 +734,7 @@ export interface Bot {
     }>;
 
     /**
-     * 获取版本信息
+     * Get version information
      * @event get_version_info
      */
     getVersionInfo(): Promise<{
@@ -744,13 +744,13 @@ export interface Bot {
     }>;
 
     /**
-     * 重启 OneBot 实现
+     * Rrstart OneBot instance
      * @event set_restart
      */
     setRestart(delay?: number): Promise<void>;
 
     /**
-     * 清理缓存
+     * Clean cache
      * @event clean_cache
      */
     cleanCache(): Promise<void>;

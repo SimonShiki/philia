@@ -217,7 +217,6 @@ export class Client implements Bot {
         });
     }
 
-    // 实现信息获取接口...
     getLoginInfo () {
         return this.callApi('get_login_info');
     }
@@ -254,7 +253,6 @@ export class Client implements Bot {
         return this.callApi('get_group_honor_info', {group_id: groupId, type});
     }
 
-    // 实现其他功能接口...
     getCookies (domain?: string) {
         return this.callApi('get_cookies', {domain});
     }

@@ -1,13 +1,20 @@
 {
     "name": "philia-onebot",
     "description": "Fastly build your own QQ bot",
+    "version": "1.0.0",
     "type": "module",
+    "main": "./dist/bot.js",
     "scripts": {
+        "prepublish": "yarn run build",
         "type:check": "tsc --noEmit",
         "type:watch": "tsc --noEmit --watch",
         "lint": "eslint . --ext .ts",
-        "start": "tsx ./index.ts"
+        "start": "tsx ./index.ts",
+        "build": "tsc -p tsconfig.dist.json"
     },
+    "files": [
+        "dist/**/*"
+    ],
     "devDependencies": {
         "@types/node": "^22.10.2",
         "@types/ws": "^8.5.13",
