@@ -1,4 +1,4 @@
-import {BaseConfig} from '../common';
+import {BaseConfig} from '../types';
 import chalk from 'chalk';
 
 const logLevels = ['debug', 'info', 'warn', 'error'];

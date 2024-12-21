@@ -1,4 +1,4 @@
-import {Message} from '../common';
+import {Message} from '../types';
 
 // CQ code escape mapping
 const CQ_ESCAPE_MAP = {

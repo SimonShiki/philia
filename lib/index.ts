@@ -1,9 +1,10 @@
+import {Bot} from './types';
 import {WsReverseConfig, Server as WsReverseServer} from './ws-reverse/server';
 import {WsConfig, Client as WsClient} from './ws/client';
 
 export type Config = WsConfig | WsReverseConfig;
 
-export function createBot (config: Config) {
+export function createBot (config: Config): Bot {
     switch (config.mode) {
     case 'ws':
         return new WsClient(config);

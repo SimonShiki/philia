@@ -1,6 +1,6 @@
 import WebSocket, {WebSocketServer} from 'ws';
 import {Logger} from '../util/logger';
-import {Anonymous, ApiResponseMap, BaseConfig, Bot, EventTypeMap as EventMap, Message, OneBotEvent} from '../common';
+import {Anonymous, ApiResponseMap, BaseConfig, Bot, EventTypeMap as EventMap, Message, OneBotEvent} from '../types';
 
 export interface WsReverseConfig extends BaseConfig {
     mode: 'ws-reverse';
@@ -315,5 +315,25 @@ export class Server implements Bot {
     
     cleanCache () {
         return this.callApi('clean_cache');
+    }
+
+    sendGroupForwardMsg (groupId: number, messages: Message[]) {
+        return this.callApi('send_group_forward_msg', {group_id: groupId, messages});
+    }
+
+    sendPrivateForwardMsg (userId: number, messages: Message[]) {
+        return this.callApi('send_private_forward_msg', {user_id: userId, messages});
+    }
+
+    getEssenceMsgList (groupId: number) {
+        return this.callApi('get_essence_msg_list', {group_id: groupId});
+    }
+
+    setEssenceMsg (messageId: number) {
+        return this.callApi('set_essence_msg', {message_id: messageId});
+    }
+
+    deleteEssenceMsg (messageId: number) {
+        return this.callApi('delete_essence_msg', {message_id: messageId});
     }
 }

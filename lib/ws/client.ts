@@ -1,4 +1,4 @@
-import {ApiResponseMap, Anonymous, BaseConfig, Bot, Message, OneBotEvent, EventTypeMap as EventMap} from '../common';
+import {ApiResponseMap, Anonymous, BaseConfig, Bot, Message, OneBotEvent, EventTypeMap as EventMap} from '../types';
 import WebSocket from 'ws';
 import {Logger} from '../util/logger';
 
@@ -300,5 +300,25 @@ export class Client implements Bot {
 
     cleanCache () {
         return this.callApi('clean_cache');
+    }
+
+    sendGroupForwardMsg (groupId: number, messages: Message[]) {
+        return this.callApi('send_group_forward_msg', {group_id: groupId, messages});
+    }
+
+    sendPrivateForwardMsg (userId: number, messages: Message[]) {
+        return this.callApi('send_private_forward_msg', {user_id: userId, messages});
+    }
+
+    getEssenceMsgList (groupId: number) {
+        return this.callApi('get_essence_msg_list', {group_id: groupId});
+    }
+
+    setEssenceMsg (messageId: number) {
+        return this.callApi('set_essence_msg', {message_id: messageId});
+    }
+
+    deleteEssenceMsg (messageId: number) {
+        return this.callApi('delete_essence_msg', {message_id: messageId});
     }
 }
