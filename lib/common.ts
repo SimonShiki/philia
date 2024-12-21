@@ -410,6 +410,11 @@ export interface Bot {
     init(): void;
 
     /**
+     * Dispose the bot.
+     */
+    dispose(): void;
+
+    /**
      * Add a listener.
      */
     on (listener: (event: OneBotEvent) => void): void;
