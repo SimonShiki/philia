@@ -1,5 +1,5 @@
 import WebSocket, {WebSocketServer} from 'ws';
-import {Logger} from '../logger';
+import {Logger} from '../util/logger';
 import {Anonymous, ApiResponseMap, BaseConfig, Bot, EventTypeMap as EventMap, Message, OneBotEvent} from '../common';
 
 export interface WsReverseConfig extends BaseConfig {

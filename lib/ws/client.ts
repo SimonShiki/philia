@@ -1,6 +1,6 @@
 import {ApiResponseMap, Anonymous, BaseConfig, Bot, Message, OneBotEvent, EventTypeMap as EventMap} from '../common';
 import WebSocket from 'ws';
-import {Logger} from '../logger';
+import {Logger} from '../util/logger';
 
 export interface WsConfig extends BaseConfig {
     mode: 'ws';
