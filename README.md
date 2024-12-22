@@ -1,10 +1,10 @@
 <div align="center">
 
-![](/Philia.png)
+<img src="./Philia.png" alt="Philia logo" width="200" />
 
 # Philia
 
-## Fastly build your own QQ bot
+### Fastly build your own QQ bot
 
 [简体中文](/README.CN.md)
 
@@ -50,7 +50,7 @@ bot.on('message.group', async e => {
 });
 ```
 
-Just run it with node at the end!
+Just run it with `node index.js` at the end!
 
 ### Method 2: Use this repository as a template
 
