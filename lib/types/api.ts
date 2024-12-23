@@ -3,6 +3,7 @@ import {Message} from './messages';
 
 export interface ApiResponseMap {
     // OneBot V11 standard events
+    '.handle_quick_operation': void;
     'send_private_msg': { message_id: number };
     'send_group_msg': { message_id: number };
     'send_msg': { message_id: number };

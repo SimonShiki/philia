@@ -17,7 +17,7 @@ type GetEventDetail<T> = T extends { message_type: infer M extends string } ? `m
 
 type BuildEventType<T> = T extends BaseEvent ? GetEventDetail<T> : never;
 
-type AllEventTypes = BuildEventType<OneBotEvent>;
+export type AllEventTypes = BuildEventType<OneBotEvent>;
 
 export type EventTypeMap = {
     [K in AllEventTypes]: Extract<OneBotEvent, {
@@ -30,6 +30,10 @@ export type EventTypeMap = {
     }>
 };
 
+/**
+ * Philla bot instance, which is used to interact with OneBot.
+ * @link https://github.com/botuniverse/onebot-11
+ */
 export interface Bot {
     /**
      * Initialize the bot.
@@ -58,18 +62,24 @@ export interface Bot {
 
     /**
      * Send a private message.
+     * @param autoEscape Whether the message content is sent as plain text (i.e. without parsing the CQ code),
+     * only valid if the message field is a string.
      * @event send_private_msg
      */
     sendPrivateMsg(userId: number, message: string | Message[], autoEscape?: boolean): Promise<{message_id: number}>;
 
     /**
      * Send a group message.
+     * @param autoEscape Whether the message content is sent as plain text (i.e. without parsing the CQ code),
+     * only valid if the message field is a string.
      * @event send_group_msg
      */
     sendGroupMsg(groupId: number, message: string | Message[], autoEscape?: boolean): Promise<{message_id: number}>;
 
     /**
      * Send a message.
+     * @param autoEscape Whether the message content is sent as plain text (i.e. without parsing the CQ code),
+     * only valid if the message field is a string.
      * @event send_msg
      */
     sendMsg(messageType: 'private' | 'group', id: number, message: string | Message[], autoEscape?: boolean): Promise<{message_id: number}>;
@@ -113,12 +123,14 @@ export interface Bot {
 
     /**
      * Ban someone in specific group
+     * @param duration Duration in seconds. 0 means unban.
      * @event set_group_ban
      */
     setGroupBan(groupId: number, userId: number, duration?: number): Promise<void>;
 
     /**
      * Ban someone who is anonymous in specific group
+     * @param duration Duration in seconds. You cannot unban anonymous users.
      * @event set_group_anonymous_ban
      */
     setGroupAnonymousBan(groupId: number, anonymous?: Anonymous, flag?: string, duration?: number): Promise<void>;
@@ -161,6 +173,7 @@ export interface Bot {
 
     /**
      * Set group special title
+     * @param specialTitle Special title. Leave empty to remove special title.
      * @event set_group_special_title
      */
     setGroupSpecialTitle(groupId: number, userId: number, specialTitle?: string, duration?: number): Promise<void>;

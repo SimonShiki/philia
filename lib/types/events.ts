@@ -24,7 +24,13 @@ export interface PrivateMessageEvent extends BaseEvent {
     message: string | Message[];
     raw_message: string;
     font: number;
+    /**
+     * The fields in sender are provided on a best-effort basis, i.e., it is not guaranteed that every field
+     * will be present, nor is it guaranteed that the ones that are present will be exactly correct
+     * (the cache may expire). Especially for anonymous messages, this field is not informative.
+     */
     sender: Partial<PrivateSender>;
+    reply (message: string | Message[], autoEscape?: boolean): Promise<void>;
 }
 
 export type Sex = 'male' | 'female' | 'unknown';
@@ -47,7 +53,16 @@ export interface GroupMessageEvent extends BaseEvent {
     message: string | Message[];
     raw_message: string;
     font: number;
+    /**
+     * The fields in sender are provided on a best-effort basis, i.e., it is not guaranteed that every field
+     * will be present, nor is it guaranteed that the ones that are present will be exactly correct
+     * (the cache may expire). Especially for anonymous messages, this field is not informative.
+     */
     sender: Partial<GroupSender>;
+    reply(message: string | Message[], atSender?: boolean, autoEscape?: boolean): Promise<void>;
+    recall(): Promise<void>;
+    kick(): Promise<void>;
+    ban(duration: number): Promise<void>;
 }
 
 export interface Anonymous {
@@ -96,6 +111,9 @@ type MetaEvent = LifecycleMetaEvent | HeartbeatMetaEvent;
 interface File {
     id: string;
     name: string;
+    /**
+     * File size in bytes.
+     */
     size: number;
     busid: number;
 }
@@ -194,6 +212,8 @@ export interface FriendRequestEvent extends BaseEvent {
     user_id: number;
     comment: string;
     flag: string;
+    approve(remark?: string): Promise<void>;
+    reject(): Promise<void>;
 }
 
 export interface GroupRequestEvent extends BaseEvent {
@@ -203,6 +223,8 @@ export interface GroupRequestEvent extends BaseEvent {
     user_id: number;
     comment: string;
     flag: string;
+    approve(): Promise<void>;
+    reject(reason?: string): Promise<void>;
 }
 
 export type RequestEvent = FriendRequestEvent | GroupRequestEvent;

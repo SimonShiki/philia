@@ -1,6 +1,6 @@
 import WebSocket, {WebSocketServer} from 'ws';
 import {Logger} from '../util/logger';
-import {Anonymous, ApiResponseMap, BaseConfig, Bot, EventTypeMap as EventMap, Message, OneBotEvent} from '../types';
+import {AllEventTypes, Anonymous, ApiResponseMap, BaseConfig, Bot, EventTypeMap as EventMap, Message, OneBotEvent} from '../types';
 
 export interface WsReverseConfig extends BaseConfig {
     mode: 'ws-reverse';
@@ -10,7 +10,7 @@ export class Server implements Bot {
     private config: WsReverseConfig;
     private wss: WebSocketServer;
     private logger: Logger;
-    private listeners: Map<string, ((event: OneBotEvent) => void)[]> = new Map();
+    private listeners: Map<AllEventTypes | '*', ((event: OneBotEvent) => void)[]> = new Map();
 
     constructor (config: WsReverseConfig) {
         this.config = config;
@@ -30,15 +30,86 @@ export class Server implements Bot {
 
             this.logger.info(`WebSocket connection ${ws.url} established.`);
             ws.on('message', data => {
-                const event = JSON.parse(data.toString());
+                const event: OneBotEvent = JSON.parse(data.toString());
                 this.logger.debug('Received message:\n', event);
+
+                if (!('post_type' in event)) return;
+
+                // Add quick operation methods
+                if (event.post_type === 'message') {
+                    if (event.message_type === 'group') {
+                        event.reply = (message, atSender = true, autoEscape) => this.callApi('.handle_quick_operation', {
+                            context: event,
+                            operation: {
+                                reply: message,
+                                at_sender: atSender,
+                                auto_escape: !!autoEscape
+                            }
+                        });
+
+                        event.recall = () => this.callApi('.handle_quick_operation', {
+                            context: {
+                                message_type: 'group',
+                                group_id: event.group_id,
+                                user_id: event.sender.user_id
+                            },
+                            operation: {delete: true}
+                        });
+
+                        event.kick = () => this.callApi('.handle_quick_operation', {
+                            context: event,
+                            operation: {kick: true}
+                        });
+
+                        event.ban = (duration = 1800) => this.callApi('.handle_quick_operation', {
+                            context: event,
+                            operation: {
+                                ban: true,
+                                ban_duration: duration
+                            }
+                        });
+                    } else {
+                        event.reply = (message, autoEscape) => this.callApi('.handle_quick_operation', {
+                            context: event,
+                            operation: {
+                                reply: message,
+                                auto_escape: !!autoEscape
+                            }
+                        });
+                    }
+                } else if (event.post_type === 'request') {
+                    if (event.request_type === 'friend') {
+                        event.approve = remark => this.callApi('.handle_quick_operation', {
+                            context: event,
+                            operation: {
+                                approve: true,
+                                ...(remark ? {remark} : {})
+                            }
+                        });
+                    } else {
+                        event.approve = () => this.callApi('.handle_quick_operation', {
+                            context: event,
+                            operation: {
+                                approve: true
+                            }
+                        });
+
+                        event.reject = reason => this.callApi('.handle_quick_operation', {
+                            context: event,
+                            operation: {
+                                reject: true,
+                                ...(reason ? {reason} : {})
+                            }
+                        });
+                    }
+                }
 
                 const generalListeners = this.listeners.get('*') || [];
                 for (const listener of generalListeners) {
                     listener(event);
                 }
 
-                const type = `${event.post_type}.${this.getEventDetail(event)}`;
+                const type = `${event.post_type}.${this.getEventDetail(event)}` as AllEventTypes;
                 const typeListeners = this.listeners.get(type) || [];
                 for (const listener of typeListeners) {
                     listener(event);
