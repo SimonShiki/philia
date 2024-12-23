@@ -48,11 +48,7 @@ export class Server implements Bot {
                         });
 
                         event.recall = () => this.callApi('.handle_quick_operation', {
-                            context: {
-                                message_type: 'group',
-                                group_id: event.group_id,
-                                user_id: event.sender.user_id
-                            },
+                            context: event,
                             operation: {delete: true}
                         });
 

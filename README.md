@@ -12,7 +12,7 @@
 
 ---
 
-Philia is a plug-and-play QQ robot framework that encapsulates the OneBot V11 HTTP API and provides a simple and easy-to-use API in TypeScript form.
+Philia is a plug-and-play QQ robot framework that based the OneBot V11 Standard to encapsulates a simple and easy-to-use API in TypeScript.
 With Philia, you can enjoy:
 
 1. Ready-to-use experience, install the package or directly edit the source code of this repo to quickly build your own QQ robot.
@@ -51,6 +51,8 @@ bot.on('message.group', async e => {
 ```
 
 Just run it with `node index.js` at the end!
+
+PS: this module use node-specific module parsing, deno users should use `https://esm.sh/philia-onebot` as the url.
 
 ### Method 2: Use this repository as a template
 

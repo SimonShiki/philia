@@ -10,7 +10,7 @@
 
 ---
 
-Philia 是一个开箱即用的 QQ 机器人框架，它封装了 OneBot V11 HTTP API 并以 TypeScript 的形式提供了一套简单易用的 API。
+Philia 是一个开箱即用的 QQ 机器人框架，它基于 OneBot V11 标准，以 TypeScript 的形式封装了一套简单易用的 API。
 使用 Philia, 你可以享受:
 
 1. 开箱即用的体验，装包 or 直接改本仓库源码即可快速搭建自己的 QQ 机器人。
@@ -49,6 +49,8 @@ bot.on('message.group', async e => {
 ```
 
 最后用 node 运行就好啦!
+
+PS: 模块使用了 node 特有的模块解析方式，deno 用户请使用 `https://esm.sh/philia-onebot` 作为模块地址。
 
 ### 方法2: 把这个仓库当 Template 用
 
