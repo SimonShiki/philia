@@ -19,7 +19,7 @@ export class Server implements Bot {
 
     init () {
         this.wss = new WebSocketServer({host: this.config.host, port: this.config.port});
-        this.logger.info(`WebSocket server listening on port ${this.config.port} ...`);
+        this.logger.info(`WebSocket server listening on ${this.config.host}:${this.config.port} ...`);
 
         this.wss.on('connection', ws => {
             if (this.wss.clients.size > 1) {
