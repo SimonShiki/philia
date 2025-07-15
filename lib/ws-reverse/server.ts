@@ -18,8 +18,8 @@ export class Server implements Bot {
     }
 
     init () {
-        this.wss = new WebSocketServer({port: this.config.port});
-        this.logger.info(`WebSocket server listening on port ${this.config.port} ...`);
+        this.wss = new WebSocketServer({host: this.config.host, port: this.config.port});
+        this.logger.info(`WebSocket server listening on ${this.config.host}:${this.config.port} ...`);
 
         this.wss.on('connection', ws => {
             if (this.wss.clients.size > 1) {
@@ -174,7 +174,7 @@ export class Server implements Bot {
             }
 
             const ws = clients[0];
-            
+
             const handler = (data: WebSocket.Data) => {
                 const response = JSON.parse(data.toString());
                 if (response.echo === echo) {
@@ -199,7 +199,7 @@ export class Server implements Bot {
             auto_escape: autoEscape
         });
     }
-    
+
     sendGroupMsg (groupId: number, message: string | Message[], autoEscape?: boolean) {
         return this.callApi('send_group_msg', {
             group_id: groupId,
@@ -207,7 +207,7 @@ export class Server implements Bot {
             auto_escape: autoEscape
         });
     }
-    
+
     sendMsg (messageType: 'private' | 'group', id: number, message: string | Message[], autoEscape?: boolean) {
         return this.callApi('send_msg', {
             message_type: messageType,
@@ -216,23 +216,23 @@ export class Server implements Bot {
             auto_escape: autoEscape
         });
     }
-    
+
     deleteMsg (messageId: number) {
         return this.callApi('delete_msg', {message_id: messageId});
     }
-    
+
     getMsg (messageId: number) {
         return this.callApi('get_msg', {message_id: messageId});
     }
-    
+
     getForwardMsg (id: string) {
         return this.callApi('get_forward_msg', {id});
     }
-    
+
     sendLike (userId: number, times?: number) {
         return this.callApi('send_like', {user_id: userId, times});
     }
-    
+
     setGroupKick (groupId: number, userId: number, rejectAddRequest?: boolean) {
         return this.callApi('set_group_kick', {
             group_id: groupId,
@@ -240,7 +240,7 @@ export class Server implements Bot {
             reject_add_request: rejectAddRequest
         });
     }
-    
+
     setGroupBan (groupId: number, userId: number, duration?: number) {
         return this.callApi('set_group_ban', {
             group_id: groupId,
@@ -248,7 +248,7 @@ export class Server implements Bot {
             duration: duration ?? 1800
         });
     }
-    
+
     setGroupAnonymousBan (groupId: number, anonymous?: Anonymous, flag?: string, duration?: number) {
         return this.callApi('set_group_anonymous_ban', {
             group_id: groupId,
@@ -257,31 +257,31 @@ export class Server implements Bot {
             duration: duration ?? 1800
         });
     }
-    
+
     setGroupWholeBan (groupId: number, enable?: boolean) {
         return this.callApi('set_group_whole_ban', {group_id: groupId, enable});
     }
-    
+
     setGroupAdmin (groupId: number, userId: number, enable?: boolean) {
         return this.callApi('set_group_admin', {group_id: groupId, user_id: userId, enable});
     }
-    
+
     setGroupAnonymous (groupId: number, enable?: boolean) {
         return this.callApi('set_group_anonymous', {group_id: groupId, enable});
     }
-    
+
     setGroupCard (groupId: number, userId: number, card?: string) {
         return this.callApi('set_group_card', {group_id: groupId, user_id: userId, card});
     }
-    
+
     setGroupName (groupId: number, groupName: string) {
         return this.callApi('set_group_name', {group_id: groupId, group_name: groupName});
     }
-    
+
     setGroupLeave (groupId: number, isDismiss?: boolean) {
         return this.callApi('set_group_leave', {group_id: groupId, is_dismiss: isDismiss});
     }
-    
+
     setGroupSpecialTitle (groupId: number, userId: number, specialTitle?: string, duration?: number) {
         return this.callApi('set_group_special_title', {
             group_id: groupId,
@@ -290,11 +290,11 @@ export class Server implements Bot {
             duration
         });
     }
-    
+
     setFriendAddRequest (flag: string, approve?: boolean, remark?: string) {
         return this.callApi('set_friend_add_request', {flag, approve, remark});
     }
-    
+
     setGroupAddRequest (flag: string, subType: 'add' | 'invite', approve?: boolean, reason?: string) {
         return this.callApi('set_group_add_request', {
             flag,
@@ -303,27 +303,27 @@ export class Server implements Bot {
             reason
         });
     }
-    
+
     getLoginInfo () {
         return this.callApi('get_login_info');
     }
-    
+
     getStrangerInfo (userId: number, noCache?: boolean) {
         return this.callApi('get_stranger_info', {user_id: userId, no_cache: noCache});
     }
-    
+
     getFriendList () {
         return this.callApi('get_friend_list');
     }
-    
+
     getGroupInfo (groupId: number, noCache?: boolean) {
         return this.callApi('get_group_info', {group_id: groupId, no_cache: noCache});
     }
-    
+
     getGroupList () {
         return this.callApi('get_group_list');
     }
-    
+
     getGroupMemberInfo (groupId: number, userId: number, noCache?: boolean) {
         return this.callApi('get_group_member_info', {
             group_id: groupId,
@@ -331,55 +331,55 @@ export class Server implements Bot {
             no_cache: noCache
         });
     }
-    
+
     getGroupMemberList (groupId: number) {
         return this.callApi('get_group_member_list', {group_id: groupId});
     }
-    
+
     getGroupHonorInfo (groupId: number, type: 'talkative' | 'performer' | 'legend' | 'strong_newbie' | 'emotion' | 'all') {
         return this.callApi('get_group_honor_info', {group_id: groupId, type});
     }
-    
+
     getCookies (domain?: string) {
         return this.callApi('get_cookies', {domain});
     }
-    
+
     getCsrfToken () {
         return this.callApi('get_csrf_token');
     }
-    
+
     getCredentials (domain?: string) {
         return this.callApi('get_credentials', {domain});
     }
-    
+
     getRecord (file: string, outFormat: string) {
         return this.callApi('get_record', {file, out_format: outFormat});
     }
-    
+
     getImage (file: string) {
         return this.callApi('get_image', {file});
     }
-    
+
     canSendImage () {
         return this.callApi('can_send_image');
     }
-    
+
     canSendRecord () {
         return this.callApi('can_send_record');
     }
-    
+
     getStatus () {
         return this.callApi('get_status');
     }
-    
+
     getVersionInfo () {
         return this.callApi('get_version_info');
     }
-    
+
     setRestart (delay?: number) {
         return this.callApi('set_restart', {delay});
     }
-    
+
     cleanCache () {
         return this.callApi('clean_cache');
     }
